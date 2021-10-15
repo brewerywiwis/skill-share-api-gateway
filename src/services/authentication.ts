@@ -17,6 +17,12 @@ async function authenticate(token: string): Promise<boolean> {
   return data.status ? true : false
 }
 
+async function signup() {}
+
+async function signin() {}
+
 export default {
   authenticate,
+  signup,
+  signin,
 }
