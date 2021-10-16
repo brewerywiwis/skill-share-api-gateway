@@ -26,7 +26,6 @@ export async function expressAuthentication(
     if (!token) {
       throw new UnauthorizedError('No token provided')
     }
-
     try {
       const auth = await authenticationSerivce.authenticate(token)
       if (auth.status && auth.user) {
