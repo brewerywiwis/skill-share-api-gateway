@@ -33,6 +33,6 @@ export class AccountController {
   @Security(AuthenticationType.JWT, ['BASIC'])
   @Get('/me')
   public async getMe(@Request() req: ExpressRequest): Promise<any> {
-    return await authenticationService.getAllUsers(req.user!.token)
+    return await authenticationService.getMe(req.user!.token)
   }
 }
