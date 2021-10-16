@@ -6,6 +6,6 @@ import authenticationService from '../services/authentication'
 export class AccountController {
   @Get('/auth/:token')
   public async getAuth(@Path('token') token: string): Promise<boolean> {
-    return await authenticationService.authenticate(token)
+    return (await authenticationService.authenticate(token)).status
   }
 }

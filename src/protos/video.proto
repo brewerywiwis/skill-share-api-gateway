@@ -1,0 +1,11 @@
+syntax = "proto3";
+package video;
+option go_package = "skillshare/video/protos/video";
+
+message Message {
+    string body = 1;
+}
+
+service ChatService {
+    rpc SayHello(Message) returns (Message) {}
+}
