@@ -6,6 +6,7 @@ export interface VideoInfo {
   'encoding'?: (string);
   'mimetype'?: (string);
   'size'?: (string);
+  'creator'?: (string);
 }
 
 export interface VideoInfo__Output {
@@ -13,4 +14,5 @@ export interface VideoInfo__Output {
   'encoding'?: (string);
   'mimetype'?: (string);
   'size'?: (string);
+  'creator'?: (string);
 }
