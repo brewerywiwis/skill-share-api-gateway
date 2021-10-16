@@ -23,10 +23,6 @@ export class videoController {
     @UploadedFile() video: Express.Multer.File,
     @Request() request: ExpressRequest
   ): Promise<VideoUploadResponse> {
-    console.log(title)
-    console.log(description)
-    console.log(video)
-    console.log(request.user)
     const data = await videoService.uploadVideo(
       title,
       description,

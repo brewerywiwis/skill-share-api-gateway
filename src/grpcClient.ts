@@ -22,7 +22,7 @@ function loadVideoProto() {
 const videoProto = loadVideoProto()
 
 function init() {
-  const client = new videoProto.video.ChatService(
+  const client = new videoProto.video.VideoService(
     `0.0.0.0:${config.grpcPort}`,
     grpc.credentials.createInsecure()
   )
