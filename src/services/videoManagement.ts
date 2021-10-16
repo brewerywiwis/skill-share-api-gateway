@@ -32,9 +32,10 @@ async function uploadVideo(
         mimetype: video.mimetype,
         size: video.size.toString(),
         creator: uid,
+        title: title,
+        description: description,
       },
     }
-    console.log(req1)
     stream.write(req1)
     const arrByte = video.buffer
     let count = 0
