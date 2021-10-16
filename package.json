@@ -11,7 +11,7 @@
     "build:with-swagger": "npm run format && tsoa spec-and-routes && npm exec tsc",
     "build:without-swagger": "npm run format && tsoa routes && npm exec tsc",
     "dev": "nodemon --watch src --ignore ./src/routes.ts --ignore ./src/swagger.json -e ts --exec \"npm run tsoa:gen && npm exec tsc && node ./dist/main.js\" --delay 2",
-    "postinstall": "tsc",
+    "postinstall": "tsc && cp ./src/protos/*.proto ./dist/protos",
     "start": "node ./dist/main.js"
   },
   "author": "",
