@@ -8,35 +8,34 @@
 		"schemas": {
 			"SignUpRequest": {
 				"properties": {
-					"username": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"fname": {
-						"type": "string"
-					},
-					"lname": {
+					"email": {
 						"type": "string"
 					},
 					"tel": {
 						"type": "string"
 					},
-					"email": {
+					"lname": {
+						"type": "string"
+					},
+					"fname": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"username": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"username",
-					"password",
-					"fname",
-					"lname",
+					"email",
 					"tel",
-					"email"
+					"lname",
+					"fname",
+					"password",
+					"username"
 				],
-				"type": "object",
-				"additionalProperties": false
+				"type": "object"
 			},
 			"SignInRequest": {
 				"properties": {
@@ -54,10 +53,14 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Message": {
+			"VideoUploadResponse": {
 				"properties": {
-					"body": {
+					"id": {
 						"type": "string"
+					},
+					"size": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"type": "object",
@@ -284,7 +287,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Message"
+									"$ref": "#/components/schemas/VideoUploadResponse"
 								}
 							}
 						}

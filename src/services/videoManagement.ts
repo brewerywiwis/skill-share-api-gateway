@@ -1,22 +1,57 @@
+import { VideoUploadRequest } from './../protos/video/VideoUploadRequest'
 import BadRequestError from '../errors/BadRequestError'
 import grpcClient from '../grpcClient'
-import { Message } from '../protos/video/Message'
+import { VideoInfo } from '../protos/video/VideoInfo'
+import { VideoUploadResponse } from '../protos/video/VideoUploadResponse'
+
 async function searchVideoByCriteria() {}
 async function uploadVideo(
   title: string,
   description: string,
   video: Express.Multer.File,
   uid: string
-): Promise<Message> {
+): Promise<VideoUploadResponse> {
   return new Promise((resolve, reject) => {
     console.log('upload video here')
-    grpcClient.SayHello({ body: 'upload video' }, (err, result) => {
+
+    const req: VideoUploadRequest = {
+      info: {
+        originalname: video.originalname,
+        encoding: video.encoding,
+        mimetype: video.mimetype,
+        size: video.size.toString(),
+      },
+      buffer: video.buffer,
+    }
+
+    const info: VideoInfo = {
+      originalname: video.originalname,
+      encoding: video.encoding,
+      mimetype: video.mimetype,
+      size: video.size.toString(),
+    }
+
+    const buffer = video.buffer
+    // const stream1 = grpcClient.UploadVideo(info)
+    grpcClient.SayHello({ body: 'hello' }, (err, result) => {
       if (err) {
+        console.log(err)
         reject(new BadRequestError('Upload video failed'))
+      } else {
+        console.log(result)
+        resolve(result as VideoUploadResponse)
       }
-      console.log(result)
-      resolve(result as Message)
     })
+    // const stream = grpcClient.UploadVideo((err, result) => {
+    //   if (err) {
+    //     console.log(err)
+    //     reject(new BadRequestError('Upload video failed'))
+    //   } else {
+    //     console.log(result)
+    //     resolve(result as VideoUploadResponse)
+    //   }
+    // })
+    // stream.write(req)
   })
 }
 

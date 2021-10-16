@@ -8,7 +8,7 @@ import {
   Request,
 } from 'tsoa'
 import { AuthenticationType } from '../const/AuthenticationType'
-import { Message } from '../protos/video/Message'
+import { VideoUploadResponse } from '../protos/video/VideoUploadResponse'
 import videoService from '../services/videoManagement'
 import { Request as ExpressRequest } from 'express'
 
@@ -22,7 +22,7 @@ export class videoController {
     @FormField() description: string,
     @UploadedFile() video: Express.Multer.File,
     @Request() request: ExpressRequest
-  ): Promise<Message> {
+  ): Promise<VideoUploadResponse> {
     console.log(title)
     console.log(description)
     console.log(video)

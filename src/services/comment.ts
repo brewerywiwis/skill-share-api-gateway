@@ -9,3 +9,12 @@ async function getComment() {}
 async function editComment() {}
 
 async function deleteComment() {}
+
+export default {
+  addComment,
+  getAllComment,
+  getAllCommentExcept,
+  getComment,
+  editComment,
+  deleteComment,
+}

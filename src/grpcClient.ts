@@ -26,6 +26,7 @@ function init() {
     `0.0.0.0:${config.grpcPort}`,
     grpc.credentials.createInsecure()
   )
+  console.log('grpc client is running on port ', config.grpcPort)
   return client
 }
 

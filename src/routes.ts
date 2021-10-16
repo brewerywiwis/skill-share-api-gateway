@@ -19,16 +19,8 @@ const upload = multer();
 
 const models: TsoaRoute.Models = {
     "SignUpRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "username": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-            "fname": {"dataType":"string","required":true},
-            "lname": {"dataType":"string","required":true},
-            "tel": {"dataType":"string","required":true},
-            "email": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"tel":{"dataType":"string","required":true},"lname":{"dataType":"string","required":true},"fname":{"dataType":"string","required":true},"password":{"dataType":"string","required":true},"username":{"dataType":"string","required":true}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SignInRequest": {
@@ -40,10 +32,11 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Message": {
+    "VideoUploadResponse": {
         "dataType": "refObject",
         "properties": {
-            "body": {"dataType":"string"},
+            "id": {"dataType":"string"},
+            "size": {"dataType":"double"},
         },
         "additionalProperties": false,
     },
