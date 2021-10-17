@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 export default {
   port: parseInt(process.env.PORT || '8080', 10),
-  grpcPort: parseInt(process.env.GRPC_PORT || '8100', 10),
+  grpcHost: process.env.GRPC_HOST || '0.0.0.0:8100',
   swaggerPath: process.env.SWAGGER_PATH || 'src/swagger.json',
   accountServiceUrl: process.env.ACCOUNT_SERVICE_URL || '',
   authenticateApi: process.env.AUTHENTICATE_API || '',

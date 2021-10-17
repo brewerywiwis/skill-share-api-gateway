@@ -18,7 +18,7 @@ async function uploadVideo(
     }
     const stream = grpcClient.UploadVideo((err, result) => {
       if (err) {
-        // console.log(err)
+        console.log(err)
         reject(new BadRequestError('Upload video failed'))
       } else {
         // console.log(result)

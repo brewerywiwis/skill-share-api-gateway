@@ -23,10 +23,11 @@ const videoProto = loadVideoProto()
 
 function init() {
   const client = new videoProto.video.VideoService(
-    `0.0.0.0:${config.grpcPort}`,
+    `${config.grpcHost}`,
     grpc.credentials.createInsecure()
   )
-  console.log('grpc client is running on port ', config.grpcPort)
+  console.log(`grpc client is connected to ${config.grpcHost}`)
+
   return client
 }
 
