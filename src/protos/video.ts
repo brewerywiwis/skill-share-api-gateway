@@ -11,11 +11,16 @@ type SubtypeConstructor<Constructor extends new (...args: any) => any, Subtype> 
 export interface ProtoGrpcType {
   video: {
     ChatService: SubtypeConstructor<typeof grpc.Client, _video_ChatServiceClient> & { service: _video_ChatServiceDefinition }
+    Empty: MessageTypeDefinition
     Message: MessageTypeDefinition
+    NumberRequest: MessageTypeDefinition
+    VideoCriteriaRequest: MessageTypeDefinition
     VideoInfo: MessageTypeDefinition
     VideoService: SubtypeConstructor<typeof grpc.Client, _video_VideoServiceClient> & { service: _video_VideoServiceDefinition }
     VideoUploadRequest: MessageTypeDefinition
     VideoUploadResponse: MessageTypeDefinition
+    VideoUploaded: MessageTypeDefinition
+    VideoUploadedResponse: MessageTypeDefinition
   }
 }
 

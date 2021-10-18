@@ -3,7 +3,9 @@ import BadRequestError from '../errors/BadRequestError'
 import grpcClient from '../grpcClient'
 import { VideoInfo } from '../protos/video/VideoInfo'
 import { VideoUploadResponse } from '../protos/video/VideoUploadResponse'
+import { Empty } from '../protos/video/Empty'
 import { Metadata } from '@grpc/grpc-js'
+import { VideoUploaded } from './../protos/video/VideoUploaded'
 
 async function searchVideoByCriteria() {}
 async function uploadVideo(
@@ -51,6 +53,53 @@ async function uploadVideo(
     stream.end()
   })
 }
+async function getAllVideos(): Promise<VideoUploaded[]> {
+  return new Promise((resolve, reject) => {
+    const call = grpcClient.GetAllVideo({})
+    const results: VideoUploaded[] = []
+    call.on('data', function (videoUploaded: VideoUploaded) {
+      results.push(videoUploaded)
+    })
+    call.on('end', function () {
+      resolve(results)
+    })
+    call.on('error', function (e) {
+      reject(e)
+    })
+  })
+}
+
+async function getRandomVideos(n: number): Promise<VideoUploaded[]> {
+  return new Promise((resolve, reject) => {
+    const call = grpcClient.GetRandomVideo({ number: n })
+    const results: VideoUploaded[] = []
+    call.on('data', function (videoUploaded: VideoUploaded) {
+      results.push(videoUploaded)
+    })
+    call.on('end', function () {
+      resolve(results)
+    })
+    call.on('error', function (e) {
+      reject(e)
+    })
+  })
+}
+
+async function getVideoById(videoId: string): Promise<VideoUploaded[]> {
+  return new Promise((resolve, reject) => {
+    const call = grpcClient.GetVideoByCriteria({ id: videoId })
+    const results: VideoUploaded[] = []
+    call.on('data', function (videoUploaded: VideoUploaded) {
+      results.push(videoUploaded)
+    })
+    call.on('end', function () {
+      resolve(results)
+    })
+    call.on('error', function (e) {
+      reject(e)
+    })
+  })
+}
 
 async function editVideo() {}
 
@@ -68,6 +117,9 @@ export default {
   uploadVideo,
   editVideo,
   deleteVideo,
+  getAllVideos,
+  getRandomVideos,
+  getVideoById,
   createPlaylist,
   getAllPlaylist,
   getPlaylist,

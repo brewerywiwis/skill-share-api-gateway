@@ -41,6 +41,20 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "VideoUploaded": {
+        "dataType": "refObject",
+        "properties": {
+            "videoId": {"dataType":"string"},
+            "videoLink": {"dataType":"string"},
+            "creator": {"dataType":"string"},
+            "title": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "createdAt": {"dataType":"string"},
+            "updatedAt": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -236,6 +250,77 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.uploadVideo.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/videos',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function videoController_getAllVideo(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new videoController();
+
+
+              const promise = controller.getAllVideo.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/videos/random/:number',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function videoController_getRandomVideo(request: any, response: any, next: any) {
+            const args = {
+                    n: {"in":"path","name":"number","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new videoController();
+
+
+              const promise = controller.getRandomVideo.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/videos/:videoId',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function videoController_getVideoById(request: any, response: any, next: any) {
+            const args = {
+                    videoId: {"in":"path","name":"videoId","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new videoController();
+
+
+              const promise = controller.getVideoById.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

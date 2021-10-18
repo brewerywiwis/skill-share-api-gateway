@@ -65,6 +65,33 @@
 				},
 				"type": "object",
 				"additionalProperties": false
+			},
+			"VideoUploaded": {
+				"properties": {
+					"videoId": {
+						"type": "string"
+					},
+					"videoLink": {
+						"type": "string"
+					},
+					"creator": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -331,6 +358,118 @@
 						}
 					}
 				}
+			}
+		},
+		"/videos": {
+			"get": {
+				"operationId": "GetAllVideo",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/VideoUploaded"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"video"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/videos/random/{number}": {
+			"get": {
+				"operationId": "GetRandomVideo",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/VideoUploaded"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"video"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "number",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/videos/{videoId}": {
+			"get": {
+				"operationId": "GetVideoById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/VideoUploaded"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"video"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "videoId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
