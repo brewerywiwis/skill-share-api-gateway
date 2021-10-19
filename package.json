@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "proto:build": "yarn proto-loader-gen-types --grpcLib=@grpc/grpc-js --outDir=src/protos/ src/protos/*.proto",
+    "proto:build": "npm run preinstall && yarn proto-loader-gen-types --grpcLib=@grpc/grpc-js --outDir=src/protos/ src/protos/*.proto",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsoa:gen": "tsoa spec-and-routes -c ./tsoa.json",
     "start-production": "npm run build:with-swagger && node dist/main.js",

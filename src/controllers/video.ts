@@ -8,6 +8,7 @@ import {
   Request,
   Get,
   Path,
+  Query,
 } from 'tsoa'
 import { AuthenticationType } from '../const/AuthenticationType'
 import { VideoUploaded } from '../protos/video/VideoUploaded'
@@ -16,6 +17,8 @@ import videoService from '../services/videoManagement'
 import { Request as ExpressRequest } from 'express'
 import BadRequestError from '../errors/BadRequestError'
 import { Types } from 'mongoose'
+import { isUUID } from '../utils/uuidValidator'
+
 @Tags('video')
 @Route('videos')
 export class videoController {
@@ -53,14 +56,22 @@ export class videoController {
     return results
   }
   @Security(AuthenticationType.JWT, ['BASIC'])
-  @Get('/:videoId')
-  public async getVideoById(
-    @Path('videoId') videoId: string
+  @Get('/video')
+  public async getVideoByCriteria(
+    @Query('videoId') videoId?: string,
+    @Query('userId') userId?: string
   ): Promise<VideoUploaded[]> {
-    if (!Types.ObjectId.isValid(videoId)) {
+    if (videoId && !Types.ObjectId.isValid(videoId)) {
       throw new BadRequestError('video id must in form object id')
     }
-    const results = await videoService.getVideoById(videoId)
+    if (userId && !isUUID(userId)) {
+      throw new BadRequestError('user id must in form uuid4')
+    }
+
+    const results = await videoService.getVideoByCriteria(
+      videoId ? videoId : '',
+      userId ? userId : ''
+    )
     return results
   }
 }

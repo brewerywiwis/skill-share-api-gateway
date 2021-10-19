@@ -303,12 +303,13 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/videos/:videoId',
+        app.get('/videos/video',
             authenticateMiddleware([{"jwt":["BASIC"]}]),
 
-            function videoController_getVideoById(request: any, response: any, next: any) {
+            function videoController_getVideoByCriteria(request: any, response: any, next: any) {
             const args = {
-                    videoId: {"in":"path","name":"videoId","required":true,"dataType":"string"},
+                    videoId: {"in":"query","name":"videoId","dataType":"string"},
+                    userId: {"in":"query","name":"userId","dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -320,7 +321,7 @@ export function RegisterRoutes(app: express.Router) {
                 const controller = new videoController();
 
 
-              const promise = controller.getVideoById.apply(controller, validatedArgs as any);
+              const promise = controller.getVideoByCriteria.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

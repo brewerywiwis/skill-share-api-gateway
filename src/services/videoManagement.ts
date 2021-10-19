@@ -100,6 +100,31 @@ async function getVideoById(videoId: string): Promise<VideoUploaded[]> {
     })
   })
 }
+async function getVideoByCriteria(
+  videoId: string,
+  userId: string
+): Promise<VideoUploaded[]> {
+  return new Promise((resolve, reject) => {
+    const request: any = {}
+    if (videoId) {
+      request['id'] = videoId
+    }
+    if (userId) {
+      request['userId'] = userId
+    }
+    const call = grpcClient.GetVideoByCriteria(request)
+    const results: VideoUploaded[] = []
+    call.on('data', function (videoUploaded: VideoUploaded) {
+      results.push(videoUploaded)
+    })
+    call.on('end', function () {
+      resolve(results)
+    })
+    call.on('error', function (e) {
+      reject(e)
+    })
+  })
+}
 
 async function editVideo() {}
 
@@ -120,6 +145,7 @@ export default {
   getAllVideos,
   getRandomVideos,
   getVideoById,
+  getVideoByCriteria,
   createPlaylist,
   getAllPlaylist,
   getPlaylist,
