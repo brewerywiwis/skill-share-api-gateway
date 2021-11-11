@@ -8,34 +8,35 @@
 		"schemas": {
 			"SignUpRequest": {
 				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"tel": {
-						"type": "string"
-					},
-					"lname": {
-						"type": "string"
-					},
-					"fname": {
+					"username": {
 						"type": "string"
 					},
 					"password": {
 						"type": "string"
 					},
-					"username": {
+					"fname": {
+						"type": "string"
+					},
+					"lname": {
+						"type": "string"
+					},
+					"tel": {
+						"type": "string"
+					},
+					"email": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"email",
-					"tel",
-					"lname",
-					"fname",
+					"username",
 					"password",
-					"username"
+					"fname",
+					"lname",
+					"tel",
+					"email"
 				],
-				"type": "object"
+				"type": "object",
+				"additionalProperties": false
 			},
 			"SignInRequest": {
 				"properties": {
@@ -83,6 +84,12 @@
 					"description": {
 						"type": "string"
 					},
+					"status": {
+						"type": "string"
+					},
+					"permission": {
+						"type": "string"
+					},
 					"createdAt": {
 						"type": "string"
 					},
@@ -90,6 +97,103 @@
 						"type": "string"
 					}
 				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VideoStatusResponse": {
+				"properties": {
+					"result": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VideoStatusRequest": {
+				"properties": {
+					"videoId": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"videoId",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VideoInfo": {
+				"properties": {
+					"originalname": {
+						"type": "string"
+					},
+					"encoding": {
+						"type": "string"
+					},
+					"mimetype": {
+						"type": "string"
+					},
+					"size": {
+						"type": "string"
+					},
+					"creator": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"permission": {
+						"type": "string"
+					},
+					"videoId": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EditVideoRequest": {
+				"properties": {
+					"videoId": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"permission": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"videoId",
+					"title",
+					"description",
+					"permission"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DeleteVideoRequest": {
+				"properties": {
+					"videoId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"videoId"
+				],
 				"type": "object",
 				"additionalProperties": false
 			}
@@ -344,6 +448,9 @@
 									"description": {
 										"type": "string"
 									},
+									"permission": {
+										"type": "string"
+									},
 									"video": {
 										"type": "string",
 										"format": "binary"
@@ -352,6 +459,7 @@
 								"required": [
 									"title",
 									"description",
+									"permission",
 									"video"
 								]
 							}
@@ -478,6 +586,114 @@
 						}
 					}
 				]
+			}
+		},
+		"/videos/video/status": {
+			"post": {
+				"operationId": "UpdateVideoStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VideoStatusResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"video"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VideoStatusRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/videos/video/edit": {
+			"put": {
+				"operationId": "EditVideo",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VideoInfo"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"video"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditVideoRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/videos/video/delete": {
+			"delete": {
+				"operationId": "DeleteVideo",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VideoStatusResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"video"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DeleteVideoRequest"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

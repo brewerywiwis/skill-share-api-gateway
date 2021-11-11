@@ -19,8 +19,16 @@ const upload = multer();
 
 const models: TsoaRoute.Models = {
     "SignUpRequest": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"tel":{"dataType":"string","required":true},"lname":{"dataType":"string","required":true},"fname":{"dataType":"string","required":true},"password":{"dataType":"string","required":true},"username":{"dataType":"string","required":true}},"validators":{}},
+        "dataType": "refObject",
+        "properties": {
+            "username": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true},
+            "fname": {"dataType":"string","required":true},
+            "lname": {"dataType":"string","required":true},
+            "tel": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SignInRequest": {
@@ -49,8 +57,63 @@ const models: TsoaRoute.Models = {
             "creator": {"dataType":"string"},
             "title": {"dataType":"string"},
             "description": {"dataType":"string"},
+            "status": {"dataType":"string"},
+            "permission": {"dataType":"string"},
             "createdAt": {"dataType":"string"},
             "updatedAt": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "VideoStatusResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "result": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "VideoStatusRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "videoId": {"dataType":"string","required":true},
+            "status": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "VideoInfo": {
+        "dataType": "refObject",
+        "properties": {
+            "originalname": {"dataType":"string"},
+            "encoding": {"dataType":"string"},
+            "mimetype": {"dataType":"string"},
+            "size": {"dataType":"string"},
+            "creator": {"dataType":"string"},
+            "title": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "status": {"dataType":"string"},
+            "permission": {"dataType":"string"},
+            "videoId": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "EditVideoRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "videoId": {"dataType":"string","required":true},
+            "title": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "permission": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DeleteVideoRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "videoId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -236,6 +299,7 @@ export function RegisterRoutes(app: express.Router) {
             const args = {
                     title: {"in":"formData","name":"title","required":true,"dataType":"string"},
                     description: {"in":"formData","name":"description","required":true,"dataType":"string"},
+                    permission: {"in":"formData","name":"permission","required":true,"dataType":"string"},
                     video: {"in":"formData","name":"video","required":true,"dataType":"file"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
@@ -322,6 +386,78 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.getVideoByCriteria.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/videos/video/status',
+
+            function videoController_updateVideoStatus(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"VideoStatusRequest"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new videoController();
+
+
+              const promise = controller.updateVideoStatus.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/videos/video/edit',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function videoController_editVideo(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"EditVideoRequest"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new videoController();
+
+
+              const promise = controller.editVideo.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/videos/video/delete',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function videoController_deleteVideo(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"DeleteVideoRequest"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new videoController();
+
+
+              const promise = controller.deleteVideo.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

@@ -7,6 +7,8 @@ export interface VideoUploaded {
   'creator'?: (string);
   'title'?: (string);
   'description'?: (string);
+  'status'?: (string);
+  'permission'?: (string);
   'createdAt'?: (string);
   'updatedAt'?: (string);
 }
@@ -17,6 +19,8 @@ export interface VideoUploaded__Output {
   'creator'?: (string);
   'title'?: (string);
   'description'?: (string);
+  'status'?: (string);
+  'permission'?: (string);
   'createdAt'?: (string);
   'updatedAt'?: (string);
 }

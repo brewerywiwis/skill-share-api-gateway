@@ -2,9 +2,6 @@ syntax = "proto3";
 package video;
 option go_package = "skillshare/video/protos/video";
 
-message Message {
-    string body = 1;
-}
 message VideoUploadRequest{
     oneof data{
         VideoInfo info = 1;
@@ -25,6 +22,9 @@ message VideoInfo {
     string creator = 5;
     string title = 6;
     string description = 7;
+    string status = 8;
+    string permission = 9;
+    string videoId = 10;
 }
 
 message VideoUploaded {
@@ -33,8 +33,10 @@ message VideoUploaded {
     string creator = 3;
     string title = 4;
     string description = 5;
-    string createdAt = 6;
-    string updatedAt = 7;
+    string status = 6;
+    string permission = 7;
+    string createdAt = 8;
+    string updatedAt = 9;
 }
 
 message Empty{}
@@ -53,13 +55,23 @@ message VideoCriteriaRequest {
     string username = 3;
 }
 
-service ChatService {
-    rpc SayHello(Message) returns (Message) {}
+message VideoStatusRequest {
+    string id = 1;
+    string uid = 2;
+    string status = 3;
 }
+
+message VideoStatusResponse {
+    string result = 1;
+}
+
 
 service VideoService {
     rpc UploadVideo(stream VideoUploadRequest) returns (VideoUploadResponse) {};
     rpc GetAllVideo(Empty) returns (stream VideoUploadedResponse) {};
     rpc GetRandomVideo(NumberRequest) returns (stream VideoUploadedResponse) {};
     rpc GetVideoByCriteria(VideoCriteriaRequest) returns (stream VideoUploadedResponse) {};
+    rpc UpdateVideoStatus(VideoStatusRequest) returns (VideoStatusResponse) {};
+    rpc EditVideo(VideoInfo) returns (VideoInfo) {};
+    rpc DeleteVideo(VideoStatusRequest) returns (VideoStatusResponse) {};
 }

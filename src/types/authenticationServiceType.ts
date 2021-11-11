@@ -1,4 +1,4 @@
-export type SignUpRequest = {
+export interface SignUpRequest {
   username: string
   password: string
   fname: string
@@ -11,6 +11,3 @@ export interface SignInRequest {
   username: string
   password: string
 }
-import { VideoUploadRequest } from '../protos/video/VideoUploadRequest'
-export type a = VideoUploadRequest
-export type b = SignInRequest

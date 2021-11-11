@@ -6,13 +6,15 @@ import { VideoUploadResponse } from '../protos/video/VideoUploadResponse'
 import { Empty } from '../protos/video/Empty'
 import { Metadata } from '@grpc/grpc-js'
 import { VideoUploaded } from './../protos/video/VideoUploaded'
+import { VideoStatusResponse } from '../protos/video/VideoStatusResponse'
 
 async function searchVideoByCriteria() {}
 async function uploadVideo(
   title: string,
   description: string,
   video: Express.Multer.File,
-  uid: string
+  uid: string,
+  permission: string
 ): Promise<VideoUploadResponse> {
   return new Promise((resolve, reject) => {
     if (video.mimetype !== 'video/mp4') {
@@ -36,6 +38,8 @@ async function uploadVideo(
         creator: uid,
         title: title,
         description: description,
+        status: "processing",
+        permission: permission
       },
     }
     stream.write(req1)
@@ -126,9 +130,67 @@ async function getVideoByCriteria(
   })
 }
 
-async function editVideo() {}
+async function updateVideoStatus(videoId:string, status:string): Promise<VideoStatusResponse>{
+  return new Promise((resolve, reject) => {
+    const request: any = {}
+    if (videoId) {
+      request['id'] = videoId
+    }
+    if (status) {
+      request['status'] = status
+    }
+    const call = grpcClient.UpdateVideoStatus(request,function(err, result) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result as VideoStatusResponse)
+      }
+    })
+  })
+}
+async function editVideo(videoId: string, title:string, description:string, permission:string): Promise<VideoInfo> {
+  return new Promise((resolve, reject) => {
+    const request: any = {}
+    if (videoId) {
+      request['videoId'] = videoId
+    }
+    if (title) {
+      request['title'] = title
+    }
+    if (description) {
+      request['description'] = description
+    }
+    if (permission) {
+      request['permission'] = permission
+    }
+    const call = grpcClient.EditVideo(request,function(err, result) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result as VideoInfo)
+      }
+    })
+  })
+}
 
-async function deleteVideo() {}
+async function deleteVideo(videoId: string, uid: string): Promise<VideoStatusResponse>{
+  return new Promise((resolve, reject) => {
+    const request: any = {}
+    if (videoId) {
+      request['id'] = videoId
+    }
+    if (uid) {
+      request['uid'] = uid
+    }
+    const call = grpcClient.DeleteVideo(request,function(err, result) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(result as VideoStatusResponse)
+      }
+    })
+  })
+}
 
 async function createPlaylist() {}
 async function getAllPlaylist() {}
@@ -144,6 +206,7 @@ export default {
   deleteVideo,
   getAllVideos,
   getRandomVideos,
+  updateVideoStatus,
   getVideoById,
   getVideoByCriteria,
   createPlaylist,

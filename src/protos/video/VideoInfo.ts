@@ -9,6 +9,9 @@ export interface VideoInfo {
   'creator'?: (string);
   'title'?: (string);
   'description'?: (string);
+  'status'?: (string);
+  'permission'?: (string);
+  'videoId'?: (string);
 }
 
 export interface VideoInfo__Output {
@@ -19,4 +22,7 @@ export interface VideoInfo__Output {
   'creator'?: (string);
   'title'?: (string);
   'description'?: (string);
+  'status'?: (string);
+  'permission'?: (string);
+  'videoId'?: (string);
 }
