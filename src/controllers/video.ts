@@ -133,13 +133,13 @@ export class videoController {
   @Security(AuthenticationType.JWT, ['BASIC'])
   @Delete('/video/delete')
   public async deleteVideo(
-    @Body() body: DeleteVideoRequest,
+    @Query() videoId: string,
     @Request() request: ExpressRequest){
-    if (body.videoId && !Types.ObjectId.isValid(body.videoId)) {
+    if (videoId && !Types.ObjectId.isValid(videoId)) {
       throw new BadRequestError('video id must in form object id')
     }
     const results = await videoService.deleteVideo(
-      body.videoId,
+      videoId,
       request.user?.user?.uid!
     )
     if (results.result != "deleted"){

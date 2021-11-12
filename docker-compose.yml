@@ -1,9 +1,38 @@
 version: '3.7'
 
+# services:
+#   api-gateway:
+#     build: .
+#     container_name: 'api-gateway'
+#     ports:
+#       - '8000:8000'
+#     restart: always
+
 services:
   api-gateway:
-    build: .
-    container_name: 'api-gateway'
-    ports:
-      - '8000:8000'
+    image: brewder123/skill-share-api-gateway:1.0
     restart: always
+    container_name: api-gateway
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4096M
+    networks:
+      - backend-network
+    ports:
+      - "8500:8500/tcp"
+  video-service:
+    image: brewder123/skill-share-video-service:1.0
+    restart: always
+    container_name: video-service
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4096M
+    networks:
+      - backend-network
+
+networks:
+  backend-network:

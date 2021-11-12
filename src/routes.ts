@@ -7,6 +7,8 @@ import { AccountController } from './controllers/account';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { HealthController } from './controllers/health';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { playlistController } from './controllers/playlist';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { videoController } from './controllers/video';
 import { expressAuthentication } from './middlewares/authentication';
 // @ts-ignore - no great way to install types from subpackage
@@ -36,6 +38,31 @@ const models: TsoaRoute.Models = {
         "properties": {
             "username": {"dataType":"string","required":true},
             "password": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "playlistServiceType.createPlaylistRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "title": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "videoList": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "permission": {"dataType":"string","required":true},
+            "userId": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "playlistServiceType.editPlaylistRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string","required":true},
+            "title": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "videoList": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "permission": {"dataType":"string","required":true},
+            "userId": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -106,14 +133,6 @@ const models: TsoaRoute.Models = {
             "title": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
             "permission": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "DeleteVideoRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "videoId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -291,6 +310,107 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/playlists/playlist',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function playlistController_getPlaylist(request: any, response: any, next: any) {
+            const args = {
+                    creatorId: {"in":"query","name":"creatorId","dataType":"string"},
+                    id: {"in":"query","name":"id","dataType":"string"},
+                    title: {"in":"query","name":"title","dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new playlistController();
+
+
+              const promise = controller.getPlaylist.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/playlists/playlist',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function playlistController_createPlaylist(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"playlistServiceType.createPlaylistRequest"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new playlistController();
+
+
+              const promise = controller.createPlaylist.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/playlists/edit',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function playlistController_editPlaylist(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"ref":"playlistServiceType.editPlaylistRequest"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new playlistController();
+
+
+              const promise = controller.editPlaylist.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/playlists/delete',
+            authenticateMiddleware([{"jwt":["BASIC"]}]),
+
+            function playlistController_deletePlaylist(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"query","name":"id","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new playlistController();
+
+
+              const promise = controller.deletePlaylist.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/videos/upload',
             authenticateMiddleware([{"jwt":["BASIC"]}]),
             upload.single('video'),
@@ -444,7 +564,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function videoController_deleteVideo(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"ref":"DeleteVideoRequest"},
+                    videoId: {"in":"query","name":"videoId","required":true,"dataType":"string"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 

@@ -54,6 +54,70 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"playlistServiceType.createPlaylistRequest": {
+				"properties": {
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"videoList": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"permission": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"description",
+					"videoList",
+					"permission"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"playlistServiceType.editPlaylistRequest": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"videoList": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"permission": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"description",
+					"videoList",
+					"permission"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"VideoUploadResponse": {
 				"properties": {
 					"id": {
@@ -181,18 +245,6 @@
 					"title",
 					"description",
 					"permission"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"DeleteVideoRequest": {
-				"properties": {
-					"videoId": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"videoId"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -407,6 +459,162 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/playlists/playlist": {
+			"get": {
+				"operationId": "GetPlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"playlist"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "creatorId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "id",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "title",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreatePlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"playlist"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/playlistServiceType.createPlaylistRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/playlists/edit": {
+			"put": {
+				"operationId": "EditPlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"playlist"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/playlistServiceType.editPlaylistRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/playlists/delete": {
+			"delete": {
+				"operationId": "DeletePlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"playlist"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/videos/upload": {
@@ -683,17 +891,16 @@
 						]
 					}
 				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/DeleteVideoRequest"
-							}
+				"parameters": [
+					{
+						"in": "query",
+						"name": "videoId",
+						"required": true,
+						"schema": {
+							"type": "string"
 						}
 					}
-				}
+				]
 			}
 		}
 	},

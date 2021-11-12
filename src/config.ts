@@ -15,4 +15,5 @@ export default {
   swaggerPath: process.env.SWAGGER_PATH || 'src/swagger.json',
   accountServiceUrl: process.env.ACCOUNT_SERVICE_URL || '',
   authenticateApi: process.env.AUTHENTICATE_API || '',
+  videoRestServiceUrl: process.env.VIDEO_REST_SERVICE_URL || ''
 }
