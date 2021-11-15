@@ -54,6 +54,48 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"commentServiceType.CreateCommentRequest": {
+				"properties": {
+					"videoId": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"videoId",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"commentServiceType.EditCommentRequest": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"videoId": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"videoId",
+					"description"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"playlistServiceType.createPlaylistRequest": {
 				"properties": {
 					"title": {
@@ -409,6 +451,154 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/comments/comment": {
+			"get": {
+				"operationId": "GetComment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"comment"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "videoId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "userId",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateComment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"comment"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/commentServiceType.CreateCommentRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/comments/edit": {
+			"put": {
+				"operationId": "EditPlaylist",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"comment"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/commentServiceType.EditCommentRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/comments/delete": {
+			"delete": {
+				"operationId": "DeleteComment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"comment"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/health": {

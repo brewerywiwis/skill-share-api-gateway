@@ -7,11 +7,12 @@ import { Empty } from '../protos/video/Empty'
 import { Metadata } from '@grpc/grpc-js'
 import { VideoUploaded } from './../protos/video/VideoUploaded'
 import { VideoStatusResponse } from '../protos/video/VideoStatusResponse'
-import * as playlistServiceType from "../types/playlistServiceType"
+import * as playlistServiceType from '../types/playlistServiceType'
+import * as commentServiceType from '../types/commentServiceType'
 import axios from 'axios'
 import config from '../config'
 
-async function searchVideoByCriteria() { }
+async function searchVideoByCriteria() {}
 
 async function uploadVideo(
   title: string,
@@ -42,8 +43,8 @@ async function uploadVideo(
         creator: uid,
         title: title,
         description: description,
-        status: "processing",
-        permission: permission
+        status: 'processing',
+        permission: permission,
       },
     }
     stream.write(req1)
@@ -134,7 +135,10 @@ async function getVideoByCriteria(
   })
 }
 
-async function updateVideoStatus(videoId: string, status: string): Promise<VideoStatusResponse> {
+async function updateVideoStatus(
+  videoId: string,
+  status: string
+): Promise<VideoStatusResponse> {
   return new Promise((resolve, reject) => {
     const request: any = {}
     if (videoId) {
@@ -152,7 +156,12 @@ async function updateVideoStatus(videoId: string, status: string): Promise<Video
     })
   })
 }
-async function editVideo(videoId: string, title: string, description: string, permission: string): Promise<VideoInfo> {
+async function editVideo(
+  videoId: string,
+  title: string,
+  description: string,
+  permission: string
+): Promise<VideoInfo> {
   return new Promise((resolve, reject) => {
     const request: any = {}
     if (videoId) {
@@ -177,7 +186,10 @@ async function editVideo(videoId: string, title: string, description: string, pe
   })
 }
 
-async function deleteVideo(videoId: string, uid: string): Promise<VideoStatusResponse> {
+async function deleteVideo(
+  videoId: string,
+  uid: string
+): Promise<VideoStatusResponse> {
   return new Promise((resolve, reject) => {
     const request: any = {}
     if (videoId) {
@@ -196,12 +208,15 @@ async function deleteVideo(videoId: string, uid: string): Promise<VideoStatusRes
   })
 }
 
-async function createPlaylist(body: playlistServiceType.createPlaylistRequest, userId: string) {
+async function createPlaylist(
+  body: playlistServiceType.createPlaylistRequest,
+  userId: string
+) {
   return await axios({
     url: `${config.videoRestServiceUrl}/playlists/playlist`,
     method: 'POST',
     data: body,
-    headers: { "Content-Type": "application/json" }
+    headers: { 'Content-Type': 'application/json' },
   })
 }
 async function getPlaylist(param: string) {
@@ -215,13 +230,42 @@ async function editPlaylist(body: playlistServiceType.editPlaylistRequest) {
     url: `${config.videoRestServiceUrl}/playlists/edit`,
     method: 'PUT',
     data: body,
-    headers: { "Content-Type": "application/json" }
+    headers: { 'Content-Type': 'application/json' },
   })
 }
 
 async function deletePlaylist(id: string, userId: string) {
   return await axios({
     url: `${config.videoRestServiceUrl}/playlists/delete?id=${id}&userId=${userId}`,
+    method: 'DELETE',
+  })
+}
+
+async function createComment(body: commentServiceType.CreateCommentRequest) {
+  return await axios({
+    url: `${config.videoRestServiceUrl}/comments/comment`,
+    method: 'POST',
+    data: body,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
+async function getComment(param: string) {
+  return await axios({
+    url: `${config.videoRestServiceUrl}/${param}`,
+    method: 'GET',
+  })
+}
+async function editComment(body: commentServiceType.EditCommentRequest) {
+  return await axios({
+    url: `${config.videoRestServiceUrl}/comments/edit`,
+    method: 'PUT',
+    data: body,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
+async function deleteComment(id: string, userId: string) {
+  return await axios({
+    url: `${config.videoRestServiceUrl}/comments/delete?commentId=${id}&userId=${userId}`,
     method: 'DELETE',
   })
 }
@@ -239,5 +283,9 @@ export default {
   createPlaylist,
   getPlaylist,
   editPlaylist,
-  deletePlaylist
+  deletePlaylist,
+  createComment,
+  getComment,
+  editComment,
+  deleteComment,
 }
