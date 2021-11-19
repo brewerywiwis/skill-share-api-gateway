@@ -1,4 +1,4 @@
-import { Tags, Route, Get, Path, Post, Body, Request, Security } from 'tsoa'
+import { Tags, Route, Get, Path, Post, Body, Request, Security, Query, Put } from 'tsoa'
 import authenticationService from '../services/authentication'
 import { Request as ExpressRequest } from 'express'
 import {
@@ -6,6 +6,8 @@ import {
   SignUpRequest,
 } from '../types/authenticationServiceType'
 import { AuthenticationType } from '../const/AuthenticationType'
+import userService from "../services/user"
+import { EditUserRequest, GetUserByIdListRequest } from '../types/accountServiceType'
 
 @Tags('account')
 @Route('/account')
@@ -34,5 +36,21 @@ export class AccountController {
   @Get('/me')
   public async getMe(@Request() req: ExpressRequest): Promise<any> {
     return await authenticationService.getMe(req.user!.token)
+  }
+
+  @Security(AuthenticationType.JWT, ['BASIC'])
+  @Get("/user")
+  public async getUserByUsername(@Query() username: string): Promise<any> {
+    return (await userService.getUserByUsername(username)).data
+  }
+
+  @Security(AuthenticationType.JWT, ['BASIC'])
+  @Put("/user")
+  public async editUser(@Body() body: EditUserRequest) {
+    return (await userService.editUser(body)).data
+  }
+
+  public async getUserByIdList(@Body() body: GetUserByIdListRequest) {
+    return (await userService.getUserByIdList(body)).data
   }
 }
