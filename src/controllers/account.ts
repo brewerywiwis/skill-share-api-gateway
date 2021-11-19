@@ -40,16 +40,18 @@ export class AccountController {
 
   @Security(AuthenticationType.JWT, ['BASIC'])
   @Get("/user")
-  public async getUserByUsername(@Query() username: string): Promise<any> {
-    return (await userService.getUserByUsername(username)).data
+  public async getUserByUsername(@Request() req: ExpressRequest, @Query() username: string): Promise<any> {
+    return (await userService.getUserByUsername(req.user!.token, username)).data
   }
 
   @Security(AuthenticationType.JWT, ['BASIC'])
   @Put("/user")
-  public async editUser(@Body() body: EditUserRequest) {
-    return (await userService.editUser(body)).data
+  public async editUser(@Request() req: ExpressRequest, @Body() body: EditUserRequest) {
+    return (await userService.editUser(req.user!.token, body)).data
   }
 
+
+  @Post("/user/list")
   public async getUserByIdList(@Body() body: GetUserByIdListRequest) {
     return (await userService.getUserByIdList(body)).data
   }

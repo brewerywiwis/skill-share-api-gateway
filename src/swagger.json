@@ -54,6 +54,42 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"EditUserRequest": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"fname": {
+						"type": "string"
+					},
+					"lname": {
+						"type": "string"
+					},
+					"tel": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetUserByIdListRequest": {
+				"properties": {
+					"idList": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"idList"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"commentServiceType.CreateCommentRequest": {
 				"properties": {
 					"videoId": {
@@ -451,6 +487,105 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/account/user": {
+			"get": {
+				"operationId": "GetUserByUsername",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"account"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "EditUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"account"
+				],
+				"security": [
+					{
+						"jwt": [
+							"BASIC"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditUserRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/account/user/list": {
+			"post": {
+				"operationId": "GetUserByIdList",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"account"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GetUserByIdListRequest"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/comments/comment": {
