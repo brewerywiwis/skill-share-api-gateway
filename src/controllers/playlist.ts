@@ -11,7 +11,7 @@ export class playlistController {
     public async getPlaylist(@Query("creatorId") creatorId?: string, @Query("id") id?: string, @Query("title") title?: string): Promise<any> {
         let param = `playlists`
         if (!creatorId && !id && !title) {
-            return (await videoManagement.getPlaylist(param)).data;
+            return await videoManagement.getPlaylist(param);
         }
         let querys = []
         if (id) {
@@ -24,7 +24,7 @@ export class playlistController {
             querys.push(`title=${title}`)
         }
         param += `?${querys.join("&")}`
-        return (await videoManagement.getPlaylist(param)).data;
+        return await videoManagement.getPlaylist(param);
     }
 
     @Security(AuthenticationType.JWT, ['BASIC'])

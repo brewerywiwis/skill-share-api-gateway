@@ -11,8 +11,21 @@ import * as playlistServiceType from '../types/playlistServiceType'
 import * as commentServiceType from '../types/commentServiceType'
 import axios from 'axios'
 import config from '../config'
+import userService from "../services/user"
 
-async function searchVideoByCriteria() {}
+async function processVideoInformation(videoList: any[]) {
+  const processed = []
+  console.log(videoList)
+  for (let v of videoList) {
+    const user: { username: string }[] = (await userService.getUserByIdList({ idList: [v.videoUploaded.creator] })).data as { username: string }[]
+    if (user.length !== 1) {
+      throw new BadRequestError();
+    }
+    processed.push({ ...v.videoUploaded, creatorName: user[0].username })
+  }
+  return processed
+}
+async function searchVideoByCriteria() { }
 
 async function uploadVideo(
   title: string,
@@ -69,8 +82,8 @@ async function getAllVideos(): Promise<VideoUploaded[]> {
     call.on('data', function (videoUploaded: VideoUploaded) {
       results.push(videoUploaded)
     })
-    call.on('end', function () {
-      resolve(results)
+    call.on('end', async function () {
+      resolve(await processVideoInformation(results))
     })
     call.on('error', function (e) {
       reject(e)
@@ -85,8 +98,8 @@ async function getRandomVideos(n: number): Promise<VideoUploaded[]> {
     call.on('data', function (videoUploaded: VideoUploaded) {
       results.push(videoUploaded)
     })
-    call.on('end', function () {
-      resolve(results)
+    call.on('end', async function () {
+      resolve(await processVideoInformation(results))
     })
     call.on('error', function (e) {
       reject(e)
@@ -101,8 +114,8 @@ async function getVideoById(videoId: string): Promise<VideoUploaded[]> {
     call.on('data', function (videoUploaded: VideoUploaded) {
       results.push(videoUploaded)
     })
-    call.on('end', function () {
-      resolve(results)
+    call.on('end', async function () {
+      resolve(await processVideoInformation(results))
     })
     call.on('error', function (e) {
       reject(e)
@@ -126,12 +139,13 @@ async function getVideoByCriteria(
     call.on('data', function (videoUploaded: VideoUploaded) {
       results.push(videoUploaded)
     })
-    call.on('end', function () {
-      resolve(results)
+    call.on('end', async function () {
+      resolve(await processVideoInformation(results))
     })
     call.on('error', function (e) {
       reject(e)
     })
+
   })
 }
 
@@ -220,10 +234,19 @@ async function createPlaylist(
   })
 }
 async function getPlaylist(param: string) {
-  return await axios({
+  const playlists: any = (await axios({
     url: `${config.videoRestServiceUrl}/${param}`,
     method: 'GET',
-  })
+  })).data
+  const processedPlaylist = []
+  for (let p of playlists) {
+    const user: { username: string }[] = (await userService.getUserByIdList({ idList: [p.creatorId] })).data as { username: string }[]
+    if (user.length !== 1) {
+      throw new BadRequestError();
+    }
+    processedPlaylist.push({ ...p, creatorName: user[0].username })
+  }
+  return processedPlaylist
 }
 async function editPlaylist(body: playlistServiceType.editPlaylistRequest) {
   return await axios({
@@ -250,10 +273,19 @@ async function createComment(body: commentServiceType.CreateCommentRequest) {
   })
 }
 async function getComment(param: string) {
-  return await axios({
+  const comment: any = (await axios({
     url: `${config.videoRestServiceUrl}/${param}`,
     method: 'GET',
-  })
+  })).data
+  const processedComment = []
+  for (let c of comment) {
+    const user: { username: string }[] = (await userService.getUserByIdList({ idList: [c.userId] })).data as { username: string }[]
+    if (user.length !== 1) {
+      throw new BadRequestError();
+    }
+    processedComment.push({ ...c, username: user[0].username })
+  }
+  return processedComment
 }
 async function editComment(body: commentServiceType.EditCommentRequest) {
   return await axios({

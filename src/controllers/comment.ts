@@ -25,7 +25,7 @@ export class commentController {
     ): Promise<any> {
         let param = `comments`
         if (!videoId && !userId) {
-            return (await videoManagement.getPlaylist(param)).data
+            return await videoManagement.getComment(param)
         }
         let querys = []
         if (videoId) {
@@ -35,7 +35,7 @@ export class commentController {
             querys.push(`userId=${userId}`)
         }
         param += `?${querys.join('&')}`
-        return (await videoManagement.getComment(param)).data
+        return await videoManagement.getComment(param)
     }
 
     @Security(AuthenticationType.JWT, ['BASIC'])
